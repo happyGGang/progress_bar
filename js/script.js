@@ -1,13 +1,22 @@
 ;(function () {
   'use strict'
 
+  let timerId
   const get = (target) => {
     return document.querySelector(target)
   }
 
+  const throttle = (callback, time) => {
+    if(timerId) return
+    timerId = setTimeout(() => {
+      callback()
+      timerId = undefined
+    }, time)
+  }
+
   const $progressBar = get('.progress-bar')
 
-  const onscroll = () => {
+  const onScroll = () => {
     const height = 
     document.documentElement.scrollHeight - 
     document.documentElement.clientHeight
@@ -18,5 +27,5 @@
     $progressBar.style.width = width + '%'
   }
 
-  window.addEventListener('scroll', () => onscroll()) 
+  window.addEventListener('scroll', () => throttle(onScroll, 100)) 
 })()
